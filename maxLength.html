@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--表单限制长度，兼容IE8-->
+<!--最大只能输入10个字符-->
+<input type="text" maxlength="10" onchange="this.value=this.value.substring(0, 10)"
+       onkeydown="this.value=this.value.substring(0, 10)" onkeyup="this.value=this.value.substring(0, 10)">
+</body>
+</html>
