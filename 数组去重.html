@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+去重方法一，利用数组排序，通过相邻元素比较，去除重复元素。可以严格匹配以区分数据类型。
+
+去重方法二，借用对象属性方法，将数组中的元素添加为对象的属性，遍历数组元素的时候查询对象是否已经有该属性，如果有则不重复添加。
+
+去重方法三，借用正则匹配的方法，将新数组转换为字符串，原数组中的每个元素与在字符串中查找，如果匹配到，则不添加。
+
+去重方法四，使用js新特性的Map对象，使用键值对的方式修改第二种方法，或者利用Set对象，自动过滤掉重复项，而且可以判断数据类型。
+三种方法中，个人觉得第一种方法是最好用的，而且可以严格判断数据类型。第二种方法占用的内存相对较大，而且不利于
+
+数据类型的去重。第三种方法利用正则匹配，也不利于数据类型的判断。第四种方法，使用map键值对方式记录数组中数据是否存在过或者Set方式自动去重，可以判断数据类型，简单易懂，但Map和Set是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。
+<script>
+    //数组去重方法1
+    Array.prototype.arrUnique = function () {
+        this.sort();        //先将数组排序
+        var arr = [this[0]];       //定义一个新数组从排序后的数组的第一个开始接收值
+        for (var i = 1; i < this.length; i++) {   //从第二个值开始比较
+            if (this[i] !== arr[arr.length - 1]) arr.push(this[i]);    //比较相邻的值不一样时，新数组接收值，达到去重效果
+        }
+        return arr;
+    };
+
+    //数组去重方法2 （不能判断类型）
+    Array.prototype.uniqueArr = function () {
+        var arr = [];
+        var obj = {};
+        for (var i = 0; i < this.length; i++) {
+            if (!obj[this[i]]) {
+                arr.push(this[i]);
+                obj[this[i]] = this[i];
+            }
+        }
+        return arr;
+    };
+
+    //数组去重方法3 （不能判断类型）
+    Array.prototype.uniqueArr2 = function () {
+        var arr = [];
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] === '') this[i] = "★";
+            if (!RegExp(this[i], "g").test(arr.join(","))) {
+                if (this[i] == "★") this[i] = '';
+                arr.push(this[i]);
+            }
+        }
+        return arr;
+    };
+
+    //数组去重方法4
+    Array.prototype.unique = function () {
+        var arr = [];
+        var map = new Map();
+        for (var i = 0; i < this.length; i++) {
+            if (!map.has(this[i])) {
+                arr.push(this[i]);
+                map.set(this[i], true)
+            }
+        }
+        return arr;
+    };
+
+    Array.prototype.unique2 = function () {
+        var arr = [];
+        var set = new Set(this);
+        set.forEach(function (item) {
+            arr.push(item);
+        });
+        return arr;
+    };
+</script>
+</body>
+</html>
